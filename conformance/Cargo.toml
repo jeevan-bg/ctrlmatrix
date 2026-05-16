@@ -1,0 +1,22 @@
+[package]
+name = "ctrlmatrix-conformance"
+version = "0.1.0"
+edition = "2021"
+description = "CTRLMATRIX L0 Rust conformance MVP — proptest harness mirroring the Lean abstract spec for M6 (Audit Log) hash-chain wellFormedness. See conformance/README.md and  [ref]."
+license = "Apache-2.0"
+publish = false
+
+[lib]
+name = "ctrlmatrix_conformance"
+path = "src/lib.rs"
+
+[dependencies]
+sha2 = "0.10"
+
+[dev-dependencies]
+proptest = "1"
+
+[profile.release]
+opt-level = 3
+debug = false
+lto = false

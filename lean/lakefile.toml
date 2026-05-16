@@ -1,0 +1,13 @@
+name = "AgentKernel"
+version = "0.1.0"
+defaultTargets = ["AgentKernel"]
+
+[[lean_lib]]
+name = "AgentKernel"
+# precompileModules pushes inductive-family elaboration cost AOT
+# into the build system per v1.6  lake-cache discipline. Combined
+# with module isolation in AgentKernel/Replay/Payload.lean (memo
+# § 7 intervention 4), this keeps the elaboration cost off the hot
+# path of every importing file. The setting takes effect on
+# subsequent `lake build` invocations after a single full rebuild.
+precompileModules = true

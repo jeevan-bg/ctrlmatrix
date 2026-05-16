@@ -1,0 +1,28 @@
+# OS / editor noise
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Lean build artifacts
+lean/.lake/
+lean/build/
+lean/.cache/
+**/*.olean
+**/*.ilean
+**/*.hash
+
+# Rust build artifacts
+conformance/target/
+verus/target/
+
+# Verus / Aeneas local caches
+verus/.verus-cache/
+
+# TLAPS local cache
+tla/.tlacache/
+tla/**/*.tlaps/
+
+# IDE noise
+.idea/
+.vscode/

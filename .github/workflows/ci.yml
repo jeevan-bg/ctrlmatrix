@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lean:
+    name: Build Lean substrate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install elan
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Pin Lean toolchain
+        working-directory: lean
+        run: |
+          cat lean-toolchain
+          lake --version
+      - name: Build
+        working-directory: lean
+        run: lake build
+      - name: Print axiom envelope
+        working-directory: lean
+        run: lake env lean MeasureAxioms.lean
+
+  conformance:
+    name: Rust conformance suite
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: conformance
+      - name: cargo test --release --all-features
+        working-directory: conformance
+        run: cargo test --release --all-features
+
+  # NOTE: a `verus` job will be added once the verus/ crate is published.
+  # Earlier placeholder was removed because GitHub Actions evaluates
+  # job-level `if: hashFiles(...)` BEFORE checkout, when no workspace
+  # exists — the function errors out and aborts the whole workflow at
+  # startup (the failure mode the first refinement-mirror push hit).

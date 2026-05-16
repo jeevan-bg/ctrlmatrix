@@ -1,0 +1,15 @@
+leanprover/lean4:v4.30.0-rc2
+# commit-to-rc-policy pin (long-lived).
+#
+# Why a non-stable -rc pin?  Upstream `leanprover/lean4` has not shipped a
+# `v4.30.0` stable release; only `v4.30.0-rc1` (2026-04-01) and
+# `v4.30.0-rc2` (2026-04-17) prerelease tags exist for the v4.30.0 line.
+# We pin rc2 deliberately rather than bump to an older stable (`v4.29.x`)
+# because the v1.6+ build chain depends on v4.30.0-rc-line features and
+# downgrading would force substrate edits we have explicitly refused.
+#
+# Justification trail:
+#
+#
+# Implementation note: `elan` reads only the first non-empty line; lines
+# below (this commit-to-rc-policy memo block) are ignored by the resolver.
